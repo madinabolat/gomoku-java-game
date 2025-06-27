@@ -12,6 +12,8 @@ public class Main {
         HumanVsHumanGame game = new HumanVsHumanGame(scanner);
         game.testMethod();
 
+        //Refactor
+
     }
 
 
