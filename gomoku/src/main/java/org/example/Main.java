@@ -12,16 +12,9 @@ public class Main {
         HumanVsHumanGame game = new HumanVsHumanGame(scanner);
         game.testMethod();
 
-        //Refactor
 
     }
-
-
-//
-//
-//
-//
-//
+    
 //    Scanner scanner = new Scanner(System.in);
 //        System.out.println("Enter the size of the board (max: 15), for example: 15 for a 15x15 board (a classic gomoku game). The board will always be square");
 //    //NEED EXCEPTION
