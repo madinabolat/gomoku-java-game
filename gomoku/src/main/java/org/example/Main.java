@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         HumanVsHumanGame game = new HumanVsHumanGame(scanner);
-        game.testMethod();
+        game.createBoard();
 
 
     }

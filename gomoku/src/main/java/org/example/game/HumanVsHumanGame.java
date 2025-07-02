@@ -8,12 +8,13 @@ import java.util.Scanner;
 public class HumanVsHumanGame {
     public Scanner scanner;
     public Board board;
+    public int numberOfConsecutiveCellsToWin;
 
     public HumanVsHumanGame(Scanner scanner){
         this.scanner = scanner;
     }
 
-    public void testMethod(){
+    public void createBoard(){
         System.out.println("Enter the size of the board (max: 15), for example: 15 for a 15x15 board (a classic gomoku game). The board will always be square");
         int boardSize = -1;
         while (true) {
@@ -30,9 +31,8 @@ public class HumanVsHumanGame {
         }
         this.board = new Board(boardSize);
         board.printBoard();
-
-
     }
+
 
     //int numConsecutiveCellsToWin;
 
