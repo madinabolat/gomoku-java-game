@@ -1,8 +1,8 @@
 package org.example.board;
 
 public class Board {
-    private final int boardSize;
-    private final CellState[][] board;
+    public final int boardSize;
+    public CellState[][] board;
 
     public Board(int boardSize){
         this.boardSize = boardSize;
