@@ -1,5 +1,7 @@
 package org.example.board;
 
+import org.example.player.Move;
+
 public class Board {
     public final int boardSize;
     public CellState[][] board;
@@ -46,9 +48,9 @@ public class Board {
         return true;
     }
 
-    public void placeMove(int x, int y, CellState cellState){
-        if (checkIfCellEmpty(x,y)) {
-            board[x][y]=cellState;
+    public void placeMove(Move move){
+        if (checkIfCellEmpty(move.x,move.y)) {
+            board[move.x][move.y]=move.cellState;
         } else {
             System.out.println("This cell is occupied. Please try again.");
         }

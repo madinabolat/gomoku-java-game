@@ -3,27 +3,27 @@ package org.example.game;
 import org.example.board.Board;
 import org.example.board.CellState;
 import org.example.player.HumanPlayer;
-
+import org.example.player.Move;
+import org.example.player.Player;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class HumanVsHumanGame {
     public Scanner scanner;
-    public int boardSize;
     public Board board;
     public int numberOfConsecutiveCellsToWin;
     public HumanPlayer playerOne;
     public HumanPlayer playerTwo;
-    public int currentRound;
-    public String currentStatus;
 
     public HumanVsHumanGame(Scanner scanner){
         this.scanner = scanner;
+        this.playerOne = new HumanPlayer(scanner,CellState.PLAYER_ONE, "Player One");
+        this.playerTwo = new HumanPlayer(scanner,CellState.PLAYER_TWO, "Player Two");
     }
 
     public void createBoard(){
         System.out.println("Enter the size of the board (max: 15), for example: 15 for a 15x15 board (a classic gomoku game). The board will always be square");
-        boardSize = -1;
+        int boardSize = -1;
         while (true) {
             try {
                 boardSize = Integer.parseInt(scanner.nextLine());
@@ -40,7 +40,10 @@ public class HumanVsHumanGame {
         board.printBoard();
     }
 
+
     public void playGame(){
+        createBoard();
+
         System.out.println("Choose the number of consecutive cells needed to win (for a classic Gomoku game pick 5): ");
         int numberOfConsecutiveCellsToWin = -1;
         while (true) {
@@ -58,10 +61,28 @@ public class HumanVsHumanGame {
         this.numberOfConsecutiveCellsToWin = numberOfConsecutiveCellsToWin;
 
 
-        currentRound = 0;
-        createBoard();
+        int currentRound = 0;
+        HumanPlayer currentPlayer;
+        Move currentMove;
+        String currentStatus = new String();
         while (currentStatus != "Win"){
-            placeMove();
+            if (currentRound % 2 == 0) {
+                currentPlayer = playerOne;
+            } else {
+                currentPlayer = playerTwo;
+            }
+
+            while (true){
+                currentMove = currentPlayer.getMove();
+                if (board.checkIfCellEmpty(currentMove.x, currentMove.y)){
+                    break;
+                } else {
+                    System.out.println("This cell is occupied. Please enter again");
+                    continue;
+                }
+            }
+
+            board.placeMove(currentMove);
             board.printBoard();
 
             if (checkIfWon()==true) {
@@ -87,8 +108,8 @@ public class HumanVsHumanGame {
         int counterRow = 0;
         int counterDiagonalRight = 0;
         int counterDiagonalLeft = 0;
-        for (int i = 0; i < boardSize; i++){
-            for (int j = 0; j < boardSize-1; j++){
+        for (int i = 0; i < board.boardSize; i++){
+            for (int j = 0; j < board.boardSize-1; j++){
                 if (boardArray[i][j] == boardArray[i][j + 1] && boardArray[i][j] != CellState.EMPTY){
                     counterCol++;
                 }
@@ -104,12 +125,12 @@ public class HumanVsHumanGame {
 
         }
 
-        for (int i = 0; i < boardSize-1; i++){
-            for (int j = 0; j < boardSize-1; j++){
+        for (int i = 0; i < board.boardSize-1; i++){
+            for (int j = 0; j < board.boardSize-1; j++){
                 if (boardArray[i][j]==boardArray[i+1][j+1] && boardArray[i][j]!=CellState.EMPTY){
                     counterDiagonalRight++;
                     int k = 0;
-                    while (counterDiagonalRight < numberOfConsecutiveCellsToWin && i<boardSize-2-k && j<boardSize-2-k){
+                    while (counterDiagonalRight < numberOfConsecutiveCellsToWin && i<board.boardSize-2-k && j<board.boardSize-2-k){
                         if (boardArray[i+1+k][j+1+k]==boardArray[i+k+2][j+k+2] && boardArray[i+1+k][j+1+k]!=CellState.EMPTY){
                             counterDiagonalRight++;
                         }
@@ -123,12 +144,12 @@ public class HumanVsHumanGame {
 
             }
         }
-        for (int i = 0; i < boardSize; i++){
-            for (int j = 0; j < boardSize; j++){
-                if (j>0 && i < boardSize-1 && boardArray[i][j]==boardArray[i+1][j-1] && boardArray[i][j]!=CellState.EMPTY){
+        for (int i = 0; i < board.boardSize; i++){
+            for (int j = 0; j < board.boardSize; j++){
+                if (j>0 && i < board.boardSize-1 && boardArray[i][j]==boardArray[i+1][j-1] && boardArray[i][j]!=CellState.EMPTY){
                     counterDiagonalLeft++;
                     int k = 0;
-                    while (counterDiagonalLeft < numberOfConsecutiveCellsToWin && i<boardSize-2-k ){
+                    while (counterDiagonalLeft < numberOfConsecutiveCellsToWin && i<board.boardSize-2-k ){
                         if (boardArray[i+1+k][j-1-k]==boardArray[i+k+2][j-k-2] && boardArray[i+1+k][j-1-k]!=CellState.EMPTY){
                             counterDiagonalLeft++;
                         }

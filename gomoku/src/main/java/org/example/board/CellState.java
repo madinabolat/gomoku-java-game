@@ -6,6 +6,7 @@ public enum CellState {
     PLAYER_TWO('b');
 
     final char symbol;
+
     CellState(char symbol){
       this.symbol = symbol;
     }
