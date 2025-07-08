@@ -17,29 +17,35 @@ public class HumanPlayer {
 
     public Move getMove() {
         System.out.println(name + ", enter your move in 'row,column' format (example: '3,3' if you want to place your move in 3rd row, 3rd column");
-        while (true){
-            try {
-                scanner.useDelimiter(",");
 
-                //case 1 if not proper delimiter
-                //case 2 if proper delimiter ->
-                 // case2.1 if not integer in either position
-
-                int x = scanner.nextInt() - 1;
-                int y = scanner.nextInt() - 1;
-                if () {
-
-                    continue;
-                }
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println("Enter a valid integer");
-            }
-        }
-
-
-
+        scanner.useDelimiter(",");
+        int x = scanner.nextInt() - 1;
+        int y = scanner.nextInt() - 1;
         return new Move(x,y,cellState);
+
+//        while (true){
+//            try {
+//                scanner.useDelimiter(",");
+//
+//                //case 1 if not proper delimiter
+//                //case 2 if proper delimiter ->
+//                 // case2.1 if not integer in either position
+//
+//                int x = scanner.nextInt() - 1;
+//                int y = scanner.nextInt() - 1;
+//                if () {
+//
+//                    continue;
+//                }
+//                break;
+//            } catch (NumberFormatException e) {
+//                System.out.println("Enter a valid integer");
+//            }
+//        }
+//
+//
+//
+//        return new Move(x,y,cellState);
 
 //        int boardSize = -1;
 //        while (true) {
