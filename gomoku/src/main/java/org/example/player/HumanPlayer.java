@@ -46,23 +46,7 @@ public class HumanPlayer {
 //
 //
 //        return new Move(x,y,cellState);
-
-//        int boardSize = -1;
-//        while (true) {
-//            try {
-//                boardSize = Integer.parseInt(scanner.nextLine());
-//                if (boardSize<0 || boardSize>15) {
-//                    System.out.println("Enter integer between 0 and 15");
-//                    continue;
-//                }
-//                break;
-//            } catch (NumberFormatException e) {
-//                System.out.println("Enter a valid integer");
-//            }
-//        }
-
-
-
+        
 
     }
 
