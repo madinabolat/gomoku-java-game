@@ -1,5 +1,6 @@
 package org.example.player;
 
+import org.example.board.Board;
 import org.example.board.CellState;
 
 import java.util.Scanner;
@@ -15,38 +16,34 @@ public class HumanPlayer {
         this.name = name;
     }
 
+
     public Move getMove() {
+
         System.out.println(name + ", enter your move in 'row,column' format (example: '3,3' if you want to place your move in 3rd row, 3rd column");
 
-        scanner.useDelimiter(",");
-        int x = scanner.nextInt() - 1;
-        int y = scanner.nextInt() - 1;
-        return new Move(x,y,cellState);
 
-//        while (true){
-//            try {
-//                scanner.useDelimiter(",");
-//
-//                //case 1 if not proper delimiter
-//                //case 2 if proper delimiter ->
-//                 // case2.1 if not integer in either position
-//
-//                int x = scanner.nextInt() - 1;
-//                int y = scanner.nextInt() - 1;
-//                if () {
-//
-//                    continue;
-//                }
-//                break;
-//            } catch (NumberFormatException e) {
-//                System.out.println("Enter a valid integer");
-//            }
-//        }
-//
-//
-//
-//        return new Move(x,y,cellState);
-        
+
+        String input;
+        String[] coordinates;
+        int x = -1;
+        int y = -1;
+
+        while (true) {
+            input = scanner.nextLine();
+            coordinates = input.split(",");
+
+            //add what if more commas or no comma
+
+            try {
+                x = Integer.parseInt(coordinates[0])-1;
+                y = Integer.parseInt(coordinates[1])-1;
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Enter a valid integer"); //change this language what if 1,a or a,1 or a,a
+            }
+        }
+
+        return new Move(x,y,cellState);
 
     }
 
