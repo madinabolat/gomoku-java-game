@@ -16,12 +16,9 @@ public class HumanPlayer {
         this.name = name;
     }
 
-
     public Move getMove() {
 
-        System.out.println(name + ", enter your move in 'row,column' format (example: '3,3' if you want to place your move in 3rd row, 3rd column");
-
-
+        System.out.println(name + ", enter your move in 'row,column' format (example: '3,3' if you want to place your move in 3rd row, 3rd column). Row, column numbers start from 1.");
 
         String input;
         String[] coordinates;
@@ -31,16 +28,31 @@ public class HumanPlayer {
         while (true) {
             input = scanner.nextLine();
             coordinates = input.split(",");
+            System.out.println(coordinates.length);
 
-            //add what if more commas or no comma
+            if (coordinates.length<2){
+                System.out.println("You entered too few arguments. Enter exactly two integers separated by comma.");
+                continue;
+            } else if (coordinates.length>2){
+                System.out.println("You entered too many arguments. Enter exactly two integers separated by comma.");
+                continue;
+            }
 
             try {
-                x = Integer.parseInt(coordinates[0])-1;
-                y = Integer.parseInt(coordinates[1])-1;
-                break;
+                x = Integer.parseInt(coordinates[0].trim())-1;
             } catch (NumberFormatException e) {
-                System.out.println("Enter a valid integer"); //change this language what if 1,a or a,1 or a,a
+                System.out.println("Input "+ coordinates[0] + " is not valid. Enter a valid integer");
+                continue;
             }
+
+            try {
+                y = Integer.parseInt(coordinates[1].trim())-1;
+            } catch (NumberFormatException e) {
+                System.out.println("Input "+ coordinates[1] + " is not valid. Enter a valid integer");
+                continue;
+            }
+            break;
+
         }
 
         return new Move(x,y,cellState);

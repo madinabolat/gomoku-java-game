@@ -37,6 +37,14 @@ public class Board {
         return board[x][y]==CellState.EMPTY;
     }
 
+    public boolean checkIfValidCoordinates(int x, int y){
+        if (x < boardSize && x >= 0 && y >=0 && y < boardSize){
+            return true;
+        }
+        return false;
+    }
+
+
     public boolean checkIfBoardFull() {
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {

@@ -17,8 +17,27 @@ public class HumanVsHumanGame {
 
     public HumanVsHumanGame(Scanner scanner){
         this.scanner = scanner;
-        this.playerOne = new HumanPlayer(scanner,CellState.PLAYER_ONE, "Player One");
-        this.playerTwo = new HumanPlayer(scanner,CellState.PLAYER_TWO, "Player Two");
+    }
+
+    public void initializePlayers(){
+        String nameOne = getValidPlayerName("Player One");
+        String nameTwo = getValidPlayerName("Player Two");
+        this.playerOne = new HumanPlayer(scanner,CellState.PLAYER_ONE, nameOne);
+        this.playerTwo = new HumanPlayer(scanner,CellState.PLAYER_TWO, nameTwo);
+    }
+
+    public String getValidPlayerName(String playerNum){
+        System.out.print("Enter name for " + playerNum + ": ");
+        String name;
+        while (true){
+            name = scanner.nextLine().trim();
+            if (name.isEmpty()){
+                System.out.println("Name cannot be empty. Please enter a valid name.");
+                continue;
+            }
+            break;
+        }
+        return name;
     }
 
     public void createBoard(){
@@ -43,7 +62,6 @@ public class HumanVsHumanGame {
 
     public void playGame(){
         createBoard();
-
         System.out.println("Choose the number of consecutive cells needed to win (for a classic Gomoku game pick 5): ");
         int numberOfConsecutiveCellsToWin = -1;
         while (true) {
@@ -74,12 +92,15 @@ public class HumanVsHumanGame {
 
             while (true){
                 currentMove = currentPlayer.getMove();
-                if (board.checkIfCellEmpty(currentMove.x, currentMove.y)){
-                    break;
-                } else {
+                if (!board.checkIfValidCoordinates(currentMove.x, currentMove.y)) {
+                    System.out.println("This cell is out of bounds. Please enter coordinates within the board size " + board.boardSize + "x" + board.boardSize);
+                    continue;
+                }
+                if (!board.checkIfCellEmpty(currentMove.x, currentMove.y)) {
                     System.out.println("This cell is occupied. Please enter again");
                     continue;
                 }
+                break;
             }
 
             board.placeMove(currentMove);
