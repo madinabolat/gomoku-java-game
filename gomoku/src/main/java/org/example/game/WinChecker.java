@@ -37,17 +37,33 @@ public class WinChecker {
     //dx,dy
     //horizontal -> (0,1), (0,-1)
     //vertical -> (1,0), (-1,0)
-    //diagonal -> (1,1), (1,-1), (-1,-1), (-1,1)
+    //diagonal -> (1,1), (-1,-1), (-1,1), (1,-1)
 
 
     //check so that it counts not just starting from that cell to the right / left / diagonal numofconssecutive cells but also that cell some to the left, some to the right together line
 
     public Boolean isWinning(int x, int y){
-        for (int i = -1; i<=1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                if (hasLine(x,y,i,j,numberOfConsecutiveCellsToWin) && !(i==0 && j==0)){
-                    return true;
-                }
+//        for (int i = -1; i<=1; i++) {
+//            for (int j = -1; j <= 1; j++) {
+//                if (hasLine(x,y,i,j,numberOfConsecutiveCellsToWin) && !(i==0 && j==0)){
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+
+        //change!!!
+        for (int k = 0; k<=numberOfConsecutiveCellsToWin;k++) {
+            if (
+                    (hasLine(x,y,0,1, k) && hasLine(x,y,0,-1,numberOfConsecutiveCellsToWin-k))
+                            ||
+                            (hasLine(x,y,1,0, k) && hasLine(x,y,-1,0,numberOfConsecutiveCellsToWin-k-1))
+                            ||
+                            (hasLine(x,y,1,1, k) && hasLine(x,y,-1,-1,numberOfConsecutiveCellsToWin-k))
+                            ||
+                            (hasLine(x,y,-1,1, k) && hasLine(x,y,1,-1,numberOfConsecutiveCellsToWin-k))
+            ){
+                return true;
             }
         }
         return false;
