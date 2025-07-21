@@ -7,8 +7,8 @@ public enum CellState {
 
     final char symbol;
 
-    CellState(char symbol){
-      this.symbol = symbol;
+    CellState(char symbol) {
+        this.symbol = symbol;
     }
 
     public char getSymbol() {

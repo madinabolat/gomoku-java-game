@@ -1,5 +1,4 @@
 package org.example.player;
-
 import org.example.board.CellState;
 
 public class Move {
@@ -12,5 +11,4 @@ public class Move {
         this.y = y;
         this.cellState = cellState;
     }
-
 }

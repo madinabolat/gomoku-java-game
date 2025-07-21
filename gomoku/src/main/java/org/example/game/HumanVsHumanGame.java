@@ -1,11 +1,8 @@
 package org.example.game;
-
 import org.example.board.Board;
 import org.example.board.CellState;
 import org.example.player.HumanPlayer;
 import org.example.player.Move;
-import org.example.player.Player;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class HumanVsHumanGame {
@@ -14,24 +11,25 @@ public class HumanVsHumanGame {
     public int numberOfConsecutiveCellsToWin;
     public HumanPlayer playerOne;
     public HumanPlayer playerTwo;
+    public WinChecker winChecker;
 
-    public HumanVsHumanGame(Scanner scanner){
+    public HumanVsHumanGame(Scanner scanner) {
         this.scanner = scanner;
     }
 
-    public void initializePlayers(){
+    public void initializePlayers() {
         String nameOne = getValidPlayerName("Player One");
         String nameTwo = getValidPlayerName("Player Two");
-        this.playerOne = new HumanPlayer(scanner,CellState.PLAYER_ONE, nameOne);
-        this.playerTwo = new HumanPlayer(scanner,CellState.PLAYER_TWO, nameTwo);
+        this.playerOne = new HumanPlayer(scanner, CellState.PLAYER_ONE, nameOne);
+        this.playerTwo = new HumanPlayer(scanner, CellState.PLAYER_TWO, nameTwo);
     }
 
-    public String getValidPlayerName(String playerNum){
+    public String getValidPlayerName(String playerNum) {
         System.out.print("Enter name for " + playerNum + ": ");
         String name;
-        while (true){
+        while (true) {
             name = scanner.nextLine().trim();
-            if (name.isEmpty()){
+            if (name.isEmpty()) {
                 System.out.println("Name cannot be empty. Please enter a valid name.");
                 continue;
             }
@@ -40,13 +38,13 @@ public class HumanVsHumanGame {
         return name;
     }
 
-    public void createBoard(){
+    public void createBoard() {
         System.out.println("Enter the size of the board (max: 15), for example: 15 for a 15x15 board (a classic gomoku game). The board will always be square");
         int boardSize = -1;
         while (true) {
             try {
                 boardSize = Integer.parseInt(scanner.nextLine());
-                if (boardSize<0 || boardSize>15) {
+                if (boardSize < 0 || boardSize > 15) {
                     System.out.println("Enter integer between 0 and 15");
                     continue;
                 }
@@ -59,13 +57,13 @@ public class HumanVsHumanGame {
         board.printBoard();
     }
 
-    public void getNumOfConsecutiveCellsToWin(){
+    public void getNumOfConsecutiveCellsToWin() {
         System.out.println("Choose the number of consecutive cells needed to win (for a classic Gomoku game pick 5): ");
         int numberOfConsecutiveCellsToWin = -1;
         while (true) {
             try {
                 numberOfConsecutiveCellsToWin = Integer.parseInt(scanner.nextLine());
-                if (numberOfConsecutiveCellsToWin<0 || numberOfConsecutiveCellsToWin>15) {
+                if (numberOfConsecutiveCellsToWin < 0 || numberOfConsecutiveCellsToWin > 15) {
                     System.out.println("Enter integer between 0 and 15");
                     continue;
                 }
@@ -77,57 +75,70 @@ public class HumanVsHumanGame {
         this.numberOfConsecutiveCellsToWin = numberOfConsecutiveCellsToWin;
     }
 
+    public void initializeWinChecker() {
+        this.winChecker = new WinChecker(board, numberOfConsecutiveCellsToWin);
+    }
 
-    public void playGame(){
+    public HumanPlayer getCurrentPlayer(int currentRound) {
+        if (currentRound % 2 == 0) {
+            return playerOne;
+        } else {
+            return playerTwo;
+        }
+    }
+
+    public Move getValidMove(HumanPlayer currentPlayer) {
+        Move currentMove;
+        while (true) {
+            currentMove = currentPlayer.getMove();
+            if (!board.checkIfValidCoordinates(currentMove.x, currentMove.y)) {
+                System.out.println("This cell is out of bounds. Please enter coordinates within the board size " + board.boardSize + "x" + board.boardSize);
+                continue;
+            }
+            if (!board.checkIfCellEmpty(currentMove.x, currentMove.y)) {
+                System.out.println("This cell is occupied. Please enter again");
+                continue;
+            }
+            break;
+        }
+        return currentMove;
+    }
+
+    public void initializeGame() {
+        initializePlayers();
         createBoard();
         getNumOfConsecutiveCellsToWin();
+        initializeWinChecker();
+    }
 
+    public void playGame() {
         int currentRound = 0;
         HumanPlayer currentPlayer;
         Move currentMove;
-        String currentStatus = new String();
-        while (currentStatus != "Win"){
-            if (currentRound % 2 == 0) {
-                currentPlayer = playerOne;
-            } else {
-                currentPlayer = playerTwo;
-            }
+        GameState gameState;
 
-            while (true){
-                currentMove = currentPlayer.getMove();
-                if (!board.checkIfValidCoordinates(currentMove.x, currentMove.y)) {
-                    System.out.println("This cell is out of bounds. Please enter coordinates within the board size " + board.boardSize + "x" + board.boardSize);
-                    continue;
-                }
-                if (!board.checkIfCellEmpty(currentMove.x, currentMove.y)) {
-                    System.out.println("This cell is occupied. Please enter again");
-                    continue;
-                }
-                break;
-            }
+        gameState = GameState.IN_PROGRESS;
 
+        while (gameState != GameState.WIN) {
+            currentPlayer = getCurrentPlayer(currentRound);
+            currentMove = getValidMove(currentPlayer);
             board.placeMove(currentMove);
             board.printBoard();
 
-            //change checkIfWon - so that it has move as input
-            //add winchecker object
+            if (winChecker.isWinningMove(currentMove.x, currentMove.y)) {
+                System.out.println(currentPlayer.name + " won!");
+                gameState = GameState.WIN;
+                break;
+            }
 
-            if (checkIfWon()==true) {
-            currentStatus = "Win";
-            System.out.println("Player "+ (currentRound%2+1)+" won!");
-            break;
-        }
+            currentRound++;
 
-        currentRound ++;
-
-        if (board.checkIfBoardFull()==true){
-            System.out.println("The board is full, game is over.");
-            break;
+            if (board.checkIfBoardFull()) {
+                System.out.println("The board is full, game is over.");
+                gameState = GameState.DRAW;
+                break;
+            }
         }
     }
-    }
-
-
-
 
 }
