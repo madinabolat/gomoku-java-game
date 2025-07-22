@@ -2,14 +2,13 @@ package org.example.player;
 import org.example.board.CellState;
 import java.util.Scanner;
 
-public class HumanPlayer {
+public class HumanPlayer extends Player{
     public Scanner scanner;
     public CellState cellState;
     public String name;
 
     public HumanPlayer(Scanner scanner, CellState cellState, String name) {
-        this.scanner = scanner;
-        this.cellState = cellState;
+        super(scanner, cellState);
         this.name = name;
     }
 
