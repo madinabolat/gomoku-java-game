@@ -11,8 +11,3 @@ public class Main {
         game.playGame();
     }
 }
-ok so my plan is
-build dumb computer player now
-then abstract player
-then i already have humanvshuman game so now build general game class that uses abstract player, then delete humanvshumangame class?
-then smartcomputer class
