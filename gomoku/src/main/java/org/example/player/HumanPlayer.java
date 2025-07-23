@@ -1,18 +1,18 @@
 package org.example.player;
 import org.example.board.CellState;
+
+import java.util.Random;
 import java.util.Scanner;
 
 public class HumanPlayer extends Player{
     public Scanner scanner;
-    public CellState cellState;
-    public String name;
 
     public HumanPlayer(Scanner scanner, CellState cellState, String name) {
-        super(scanner, cellState);
-        this.name = name;
+        super(cellState, name);
+        this.scanner = scanner;
     }
 
-    public Move getMove() {
+    public int[] generateCoordinates(){
         System.out.println(name + ", enter your move in 'row,column' format " +
                 "(example: '3,3' if you want to place your move in 3rd row, 3rd column). Row, column numbers start from 1.");
 
@@ -51,9 +51,9 @@ public class HumanPlayer extends Player{
             break;
         }
 
-        return new Move(x, y, cellState);
-
+        return new int[] {x,y};
     }
+
 }
 
 
