@@ -15,6 +15,10 @@ public class Game {
     public Player playerTwo;
     public WinChecker winChecker;
 
+
+
+    //REFACTOR
+
     public Game(Scanner scanner) {
         this.scanner = scanner;
     }
@@ -22,8 +26,8 @@ public class Game {
     public void initializePlayers() {
         String nameOne = getValidPlayerName("Player One");
         String nameTwo = getValidPlayerName("Player Two");
-        this.playerOne = new HumanPlayer(scanner, CellState.PLAYER_ONE, nameOne);
-        this.playerTwo = new HumanPlayer(scanner, CellState.PLAYER_TWO, nameTwo);
+        this.playerOne = new Player(scanner, CellState.PLAYER_ONE, nameOne);
+        this.playerTwo = new Player(scanner, CellState.PLAYER_TWO, nameTwo);
     }
 
     public String getValidPlayerName(String playerNum) {
