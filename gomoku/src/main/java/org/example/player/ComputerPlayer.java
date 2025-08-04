@@ -4,9 +4,9 @@ import org.example.board.CellState;
 import java.util.Random;
 
 
-public class DumbComputerPlayer extends Player{
+public class ComputerPlayer extends Player{
 
-    public DumbComputerPlayer(CellState cellState) {
+    public ComputerPlayer(CellState cellState) {
         super(cellState, "Computer");
     }
 
