@@ -4,10 +4,10 @@ import org.example.board.CellState;
 import java.util.Random;
 
 
-public class ComputerPlayer extends Player{
+public class DumbComputerPlayer extends Player{
 
-    public ComputerPlayer(CellState cellState) {
-        super(cellState, "Computer");
+    public DumbComputerPlayer(CellState cellState) {
+        super(cellState, "Computer", PlayerType.DUMB_COMPUTER);
     }
 
     public int[] generateCoordinates(){

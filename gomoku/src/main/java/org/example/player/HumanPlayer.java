@@ -8,7 +8,7 @@ public class HumanPlayer extends Player{
     public Scanner scanner;
 
     public HumanPlayer(Scanner scanner, CellState cellState, String name) {
-        super(cellState, name);
+        super(cellState, name, PlayerType.HUMAN);
         this.scanner = scanner;
     }
 

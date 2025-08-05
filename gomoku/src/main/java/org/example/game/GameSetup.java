@@ -2,9 +2,10 @@ package org.example.game;
 
 import org.example.board.Board;
 import org.example.board.CellState;
-import org.example.player.ComputerPlayer;
+import org.example.player.DumbComputerPlayer;
 import org.example.player.HumanPlayer;
 import org.example.player.Player;
+import org.example.player.PlayerType;
 
 import java.util.Scanner;
 
@@ -19,19 +20,68 @@ public class GameSetup {
         this.scanner = scanner;
     }
 
-    // method to get player type, who is player one etc
-
-    //method to initialize players...
-
-    public Player initializeHumanPlayer() {
-        String name = getValidPlayerName();
-        return new HumanPlayer(scanner, CellState.PLAYER_ONE, name);
+    public PlayerType getPlayerType(String playerNum) {
+        System.out.print("Enter " + playerNum + " type (H for human, DC for dumb computer, SC for smart computer): ");
+        String type;
+        while (true) {
+            type = scanner.nextLine().trim();
+            if (type.isEmpty()) {
+                System.out.println("Input cannot be empty. Please enter a valid input.");
+                continue;
+            }
+            if (!(type.equals("H") || type.equals("DC") || type.equals("SC"))) {
+                System.out.println("Input can be one of H, DC or SC only.");
+                continue;
+            }
+            break;
+        }
+        PlayerType playerType = null;
+        switch(type){
+            case "H":
+                playerType = PlayerType.HUMAN;
+                break;
+            case "DC":
+                playerType = PlayerType.DUMB_COMPUTER;
+                break;
+            case "SC":
+                playerType = PlayerType.SMART_COMPUTER;
+                break;
+        }
+        return playerType;
     }
 
-    public Player initializeComputerPlayer() {
-        String name = getValidPlayerName();
-        return new ComputerPlayer(CellState.PLAYER_ONE);
+    public Player createPlayerByType(PlayerType playerType){
+        switch (playerType){
+            case PlayerType.HUMAN:
+                return createHumanPlayer();
+            case PlayerType.DUMB_COMPUTER:
+                return createDumbComputerPlayer();
+            case PlayerType.SMART_COMPUTER:
+                throw new UnsupportedOperationException("Not supported yet");
+            default:
+                throw new IllegalArgumentException("Player type is not supported.");
+        }
     }
+
+    public Player createHumanPlayer() {
+        String name = getValidPlayerName();
+        return new HumanPlayer(scanner, CellState.PLAYER_ONE, name); // WRONG - DONT KNOW PLAYER TYPE YET
+    }
+
+    public Player createDumbComputerPlayer() {
+        return new DumbComputerPlayer(CellState.PLAYER_ONE); // WRONG - DONT KNOW PLAYER TYPE YET
+    }
+
+
+    public void initializePlayers(){
+        PlayerType playerOneType = getPlayerType("Player One");
+        PlayerType playerTwoType = getPlayerType("Player Two");
+        Player playerOne = createPlayerByType(playerOneType);
+        Player playerTwo = createPlayerByType(playerTwoType);
+        this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
+    }
+
 
     public String getValidPlayerName() {
         System.out.print("Enter name for player: ");
@@ -50,7 +100,7 @@ public class GameSetup {
     public void createBoard() {
        int boardSize = getValidBoardDimensions();
        this.board = new Board(boardSize);
-       board.printBoard();
+       //board.printBoard();
     }
 
     public int getValidBoardDimensions() {
@@ -89,4 +139,16 @@ public class GameSetup {
         this.numberOfConsecutiveCellsToWin = numberOfConsecutiveCellsToWin;
     }
 
+    public void initializeGame(){
+        initializePlayers();
+        createBoard();
+        getNumOfConsecutiveCellsToWin();
+        System.out.println("Game ready to start.");
+        System.out.println("Players created:");
+        System.out.println(playerOne.toString());
+        System.out.println(playerTwo.toString());
+        System.out.println("Board created:");
+        board.printBoard();
+        System.out.println("Number of consecutive cells to win selected: "+ numberOfConsecutiveCellsToWin);
+    }
 }
