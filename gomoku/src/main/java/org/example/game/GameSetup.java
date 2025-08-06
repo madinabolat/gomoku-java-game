@@ -50,12 +50,12 @@ public class GameSetup {
         return playerType;
     }
 
-    public Player createPlayerByType(PlayerType playerType){
+    public Player createPlayerByType(PlayerType playerType, CellState cellState){
         switch (playerType){
             case PlayerType.HUMAN:
-                return createHumanPlayer();
+                return createHumanPlayer(cellState);
             case PlayerType.DUMB_COMPUTER:
-                return createDumbComputerPlayer();
+                return createDumbComputerPlayer(cellState);
             case PlayerType.SMART_COMPUTER:
                 throw new UnsupportedOperationException("Not supported yet");
             default:
@@ -63,21 +63,21 @@ public class GameSetup {
         }
     }
 
-    public Player createHumanPlayer() {
+    public Player createHumanPlayer(CellState cellState) {
         String name = getValidPlayerName();
-        return new HumanPlayer(scanner, CellState.PLAYER_ONE, name); // WRONG - DONT KNOW PLAYER TYPE YET
+        return new HumanPlayer(scanner, cellState, name); // WRONG - DONT KNOW PLAYER TYPE YET
     }
 
-    public Player createDumbComputerPlayer() {
-        return new DumbComputerPlayer(CellState.PLAYER_ONE); // WRONG - DONT KNOW PLAYER TYPE YET
+    public Player createDumbComputerPlayer(CellState cellState) {
+        return new DumbComputerPlayer(cellState); // WRONG - DONT KNOW PLAYER TYPE YET
     }
 
 
     public void initializePlayers(){
         PlayerType playerOneType = getPlayerType("Player One");
         PlayerType playerTwoType = getPlayerType("Player Two");
-        Player playerOne = createPlayerByType(playerOneType);
-        Player playerTwo = createPlayerByType(playerTwoType);
+        Player playerOne = createPlayerByType(playerOneType, CellState.PLAYER_ONE);
+        Player playerTwo = createPlayerByType(playerTwoType, CellState.PLAYER_TWO);
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
     }

@@ -8,6 +8,7 @@ public class DumbComputerPlayer extends Player{
 
     public DumbComputerPlayer(CellState cellState) {
         super(cellState, "Computer", PlayerType.DUMB_COMPUTER);
+        //think about making the name as a random string
     }
 
     public int[] generateCoordinates(){

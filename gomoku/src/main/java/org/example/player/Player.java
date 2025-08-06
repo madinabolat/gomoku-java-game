@@ -17,7 +17,7 @@ public abstract class Player {
 
     @Override
     public String toString() {
-        return new StringBuilder().append("Player name: ").append(name).append(", Player type: ").append(playerType).append(", Cell type: ").append(cellState).toString();
+        return new StringBuilder().append("Player name: ").append(name).append(", Player type: ").append(playerType).append(", Cell type: ").append(cellState.getSymbol()).toString();
     }
 
     public Move getMove() {
