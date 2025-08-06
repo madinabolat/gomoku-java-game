@@ -1,6 +1,7 @@
 package org.example;
+import org.example.game.Game;
 import org.example.game.GameSetup;
-import org.example.game.HumanVsHumanGame;
+
 import java.util.Scanner;
 
 public class Main {
@@ -9,8 +10,8 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         GameSetup gameSetup = new GameSetup(scanner);
         gameSetup.initializeGame();
-        //HumanVsHumanGame game = new HumanVsHumanGame(scanner);
-        //game.initializeGame();
-        //game.playGame();
+        Game game = new Game(gameSetup);
+        game.playGame();
+
     }
 }

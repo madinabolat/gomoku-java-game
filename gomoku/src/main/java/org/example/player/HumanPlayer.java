@@ -1,4 +1,5 @@
 package org.example.player;
+import org.example.board.Board;
 import org.example.board.CellState;
 
 import java.util.Random;
@@ -12,7 +13,8 @@ public class HumanPlayer extends Player{
         this.scanner = scanner;
     }
 
-    public int[] generateCoordinates(){
+    @Override
+    public int[] generateCoordinates(Board board){
         System.out.println(name + ", enter your move in 'row,column' format " +
                 "(example: '3,3' if you want to place your move in 3rd row, 3rd column). Row, column numbers start from 1.");
 

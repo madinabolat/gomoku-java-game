@@ -1,4 +1,5 @@
 package org.example.player;
+import org.example.board.Board;
 import org.example.board.CellState;
 import java.util.Scanner;
 
@@ -13,19 +14,19 @@ public abstract class Player {
         this.playerType = playerType;
     }
 
-    public abstract int[] generateCoordinates();
+    public abstract int[] generateCoordinates(Board board);
 
     @Override
     public String toString() {
         return new StringBuilder().append("Player name: ").append(name).append(", Player type: ").append(playerType).append(", Cell type: ").append(cellState.getSymbol()).toString();
     }
 
-    public Move getMove() {
-        int x = generateCoordinates()[0];
-        int y = generateCoordinates()[1];
+    public Move getMove(Board board) {
+        int[] coordinates = generateCoordinates(board);
+        int x = coordinates[0];
+        int y = coordinates[1];
         return new Move(x, y, cellState);
     }
-
 
 }
 

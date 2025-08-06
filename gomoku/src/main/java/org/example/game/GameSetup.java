@@ -2,10 +2,7 @@ package org.example.game;
 
 import org.example.board.Board;
 import org.example.board.CellState;
-import org.example.player.DumbComputerPlayer;
-import org.example.player.HumanPlayer;
-import org.example.player.Player;
-import org.example.player.PlayerType;
+import org.example.player.*;
 
 import java.util.Scanner;
 
@@ -35,19 +32,16 @@ public class GameSetup {
             }
             break;
         }
-        PlayerType playerType = null;
         switch(type){
             case "H":
-                playerType = PlayerType.HUMAN;
-                break;
+                return PlayerType.HUMAN;
             case "DC":
-                playerType = PlayerType.DUMB_COMPUTER;
-                break;
+                return PlayerType.DUMB_COMPUTER;
             case "SC":
-                playerType = PlayerType.SMART_COMPUTER;
-                break;
+                return PlayerType.SMART_COMPUTER;
+            default:
+                throw new IllegalArgumentException("Player type is not supported.");
         }
-        return playerType;
     }
 
     public Player createPlayerByType(PlayerType playerType, CellState cellState){
@@ -57,7 +51,7 @@ public class GameSetup {
             case PlayerType.DUMB_COMPUTER:
                 return createDumbComputerPlayer(cellState);
             case PlayerType.SMART_COMPUTER:
-                throw new UnsupportedOperationException("Not supported yet");
+                return createSmartComputerPlayer(cellState, new WinChecker(board,numberOfConsecutiveCellsToWin));
             default:
                 throw new IllegalArgumentException("Player type is not supported.");
         }
@@ -65,11 +59,15 @@ public class GameSetup {
 
     public Player createHumanPlayer(CellState cellState) {
         String name = getValidPlayerName();
-        return new HumanPlayer(scanner, cellState, name); // WRONG - DONT KNOW PLAYER TYPE YET
+        return new HumanPlayer(scanner, cellState, name);
     }
 
     public Player createDumbComputerPlayer(CellState cellState) {
-        return new DumbComputerPlayer(cellState); // WRONG - DONT KNOW PLAYER TYPE YET
+        return new DumbComputerPlayer(cellState);
+    }
+
+    public Player createSmartComputerPlayer(CellState cellState, WinChecker winChecker) {
+        return new SmartComputerPlayer(cellState, winChecker);
     }
 
 
@@ -100,7 +98,6 @@ public class GameSetup {
     public void createBoard() {
        int boardSize = getValidBoardDimensions();
        this.board = new Board(boardSize);
-       //board.printBoard();
     }
 
     public int getValidBoardDimensions() {
@@ -140,9 +137,9 @@ public class GameSetup {
     }
 
     public void initializeGame(){
-        initializePlayers();
-        createBoard();
+        createBoard(); // need this before initializePlayers() because SmartComputerPlayer needs winChecker which is created based on board and numOfConsecutiveCellsToWin
         getNumOfConsecutiveCellsToWin();
+        initializePlayers();
         System.out.println("Game ready to start.");
         System.out.println("Players created:");
         System.out.println(playerOne.toString());
