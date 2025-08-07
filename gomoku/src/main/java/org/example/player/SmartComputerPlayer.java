@@ -4,6 +4,8 @@ import org.example.board.Board;
 import org.example.board.CellState;
 import org.example.game.WinChecker;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
 
@@ -27,23 +29,43 @@ public class SmartComputerPlayer extends Player{
         int x = -1;
         int y = -1;
         CellState[][] boardArray = board.board;
+
+
         for (int i = 0; i<board.boardSize; i++){
             for (int j = 0; i<board.boardSize; i++){
-                if (winChecker.isWinningMove(i,j)){ //win yourself (if the cell state is yours) or prevent the other winning (if the cell state is the opposite)
-                    //but this wont work: isWinning calls a method which checks if the starting cell is not empty. so rethink. 
-                    x = i;
-                    y = j;
-                    break;
-                }
-                while (true) {
-                    if (!board.checkIfValidCoordinates(x, y)) {
-                        continue;
+                //defense - dont let the opponent win
+
+                HashMap<Integer, int[]> directionLengthPair = new HashMap<>();
+
+                if (boardArray[i][j] != cellState && boardArray[i][j] != CellState.EMPTY) {
+                    for (int[] dir : winChecker.directions) {
+                        int dx = dir[0];
+                        int dy = dir[1];
+                        int lengthConsecutiveCells = winChecker.countLengthConsecutiveCells(i, j, dx, dy);
+                        directionLengthPair.put(lengthConsecutiveCells, dir);
                     }
-                    if (!board.checkIfCellEmpty(x, y)) {
-                        continue;
-                    }
-                    break;
+                    int maxLength = Collections.max(directionLengthPair.keySet());
+                    int[] maxLengthDir = directionLengthPair.get(maxLength); //get value by key
+
+                    x = i + (maxLength-1) * maxLengthDir[0];
+                    y = j + (maxLength-1) * maxLengthDir[1];
                 }
+
+
+                //offense - find best route to win for you
+//
+
+
+                //giving infinite loop
+//                while (true) {
+//                    if (!board.checkIfValidCoordinates(x, y)) {
+//                        continue;
+//                    }
+//                    if (!board.checkIfCellEmpty(x, y)) {
+//                        continue;
+//                    }
+//                    break;
+//                }
             }
         }
 

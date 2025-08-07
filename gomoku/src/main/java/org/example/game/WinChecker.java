@@ -5,7 +5,7 @@ import org.example.board.CellState;
 public class WinChecker {
     public Board board;
     public int numberOfConsecutiveCellsToWin;
-    private final static int[][] directions = {{0, 1}, {1, 0}, {1, 1}, {-1, 1}};
+    public final static int[][] directions = {{0, 1}, {1, 0}, {1, 1}, {-1, 1}};
 
 
     public WinChecker(Board board, int numberOfConsecutiveCellsToWin) {
@@ -35,6 +35,10 @@ public class WinChecker {
         return counter;
     }
 
+    public int countLengthConsecutiveCells(int x, int y, int dx, int dy){
+        return countConsecutive(x, y, dx, dy) + countConsecutive(x, y, -dx, -dy) - 1;
+    }
+
     //dx,dy
     //horizontal -> (0,1), (0,-1)
     //vertical -> (1,0), (-1,0)
@@ -45,7 +49,7 @@ public class WinChecker {
         for (int[] dir : directions) {
             int dx = dir[0];
             int dy = dir[1];
-            lengthConsecutiveCells = countConsecutive(x, y, dx, dy) + countConsecutive(x, y, -dx, -dy) - 1;
+            lengthConsecutiveCells = countLengthConsecutiveCells(x, y, dx, dy);
             if (lengthConsecutiveCells == numberOfConsecutiveCellsToWin) {
                 return true;
             }
