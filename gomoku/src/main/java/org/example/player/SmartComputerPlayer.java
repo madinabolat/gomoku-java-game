@@ -32,23 +32,30 @@ public class SmartComputerPlayer extends Player{
 
 
         for (int i = 0; i<board.boardSize; i++){
-            for (int j = 0; i<board.boardSize; i++){
+            for (int j = 0; j<board.boardSize; j++){
                 //defense - dont let the opponent win
 
                 HashMap<Integer, int[]> directionLengthPair = new HashMap<>();
 
+                System.out.println("i,j are "+i+","+j);
+
                 if (boardArray[i][j] != cellState && boardArray[i][j] != CellState.EMPTY) {
                     for (int[] dir : winChecker.directions) {
+                        System.out.println("Checking dir"+dir[0]+","+dir[1]);
                         int dx = dir[0];
                         int dy = dir[1];
                         int lengthConsecutiveCells = winChecker.countLengthConsecutiveCells(i, j, dx, dy);
+                        System.out.println("Length is"+lengthConsecutiveCells);
                         directionLengthPair.put(lengthConsecutiveCells, dir);
                     }
                     int maxLength = Collections.max(directionLengthPair.keySet());
+                    System.out.println("Max length is "+maxLength);
                     int[] maxLengthDir = directionLengthPair.get(maxLength); //get value by key
+                    System.out.println("Dir for max length are "+ maxLengthDir[0]+","+maxLengthDir[1]);
 
-                    x = i + (maxLength-1) * maxLengthDir[0];
-                    y = j + (maxLength-1) * maxLengthDir[1];
+                    x = i - maxLength * maxLengthDir[0];
+                    y = j - maxLength * maxLengthDir[1];
+                    System.out.println("chosen coords "+ x +"," + y);
                 }
 
 
