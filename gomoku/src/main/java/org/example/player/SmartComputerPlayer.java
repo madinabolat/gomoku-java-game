@@ -33,11 +33,12 @@ public class SmartComputerPlayer extends Player{
 
         for (int i = 0; i<board.boardSize; i++){
             for (int j = 0; j<board.boardSize; j++){
-                //defense - dont let the opponent win
 
                 HashMap<Integer, int[]> directionLengthPair = new HashMap<>();
 
                 System.out.println("i,j are "+i+","+j);
+
+                //defense - dont let the opponent win
 
                 if (boardArray[i][j] != cellState && boardArray[i][j] != CellState.EMPTY) {
                     for (int[] dir : winChecker.directions) {
@@ -58,10 +59,7 @@ public class SmartComputerPlayer extends Player{
                     System.out.println("chosen coords "+ x +"," + y);
                 }
 
-
                 //offense - find best route to win for you
-//
-
 
                 //giving infinite loop
 //                while (true) {
