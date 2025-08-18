@@ -30,49 +30,42 @@ public class SmartComputerPlayer extends Player{
         int y = -1;
         CellState[][] boardArray = board.board;
 
-
-        for (int i = 0; i<board.boardSize; i++){
-            for (int j = 0; j<board.boardSize; j++){
-
-                HashMap<Integer, int[]> directionLengthPair = new HashMap<>();
-
-                System.out.println("i,j are "+i+","+j);
-
-                //defense - dont let the opponent win
-
-                if (boardArray[i][j] != cellState && boardArray[i][j] != CellState.EMPTY) {
+        //add max length direction to WinChecker
+        
+        for (int i = 0; i < board.boardSize; i++){
+            for (int j = 0; j < board.boardSize; j++){
+                //scenario 1
+                if (boardArray[i][j]!=CellState.EMPTY && boardArray[i][j]!=cellState){
+                    //find max length direction
                     for (int[] dir : winChecker.directions) {
-                        System.out.println("Checking dir"+dir[0]+","+dir[1]);
                         int dx = dir[0];
                         int dy = dir[1];
-                        int lengthConsecutiveCells = winChecker.countLengthConsecutiveCells(i, j, dx, dy);
-                        System.out.println("Length is"+lengthConsecutiveCells);
-                        directionLengthPair.put(lengthConsecutiveCells, dir);
+                        if (winChecker.countConsecutive(i,j,dx,dy)> winChecker.numberOfConsecutiveCellsToWin-1){
+                            x = i + dx* winChecker.countConsecutive(i,j,dx,dy);
+                            y = j + dy* winChecker.countConsecutive(i,j,dx,dy);
+                            break;
+                        }
                     }
-                    int maxLength = Collections.max(directionLengthPair.keySet());
-                    System.out.println("Max length is "+maxLength);
-                    int[] maxLengthDir = directionLengthPair.get(maxLength); //get value by key
-                    System.out.println("Dir for max length are "+ maxLengthDir[0]+","+maxLengthDir[1]);
-
-                    x = i - maxLength * maxLengthDir[0];
-                    y = j - maxLength * maxLengthDir[1];
-                    System.out.println("chosen coords "+ x +"," + y);
                 }
+                //scenario 2
+                if (boardArray[i][j]==cellState){
+                    for (int[] dir : winChecker.directions) {
+                        int dx = dir[0];
+                        int dy = dir[1];
+                        //find max length direction
+                        if (winChecker.countConsecutive(i,j,dx,dy)> winChecker.numberOfConsecutiveCellsToWin-1){
+                            x = i + dx* winChecker.countConsecutive(i,j,dx,dy);
+                            y = j + dy* winChecker.countConsecutive(i,j,dx,dy);
+                            break;
+                        }
+                    }
+                }
+                //scenario 3
+                //else just pick a cell
 
-                //offense - find best route to win for you
-
-                //giving infinite loop
-//                while (true) {
-//                    if (!board.checkIfValidCoordinates(x, y)) {
-//                        continue;
-//                    }
-//                    if (!board.checkIfCellEmpty(x, y)) {
-//                        continue;
-//                    }
-//                    break;
-//                }
             }
         }
+
 
         return new int[] {x,y};
     }
