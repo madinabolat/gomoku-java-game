@@ -13,6 +13,29 @@ public class WinChecker {
         this.numberOfConsecutiveCellsToWin = numberOfConsecutiveCellsToWin;
     }
 
+    public int[] maxConsecutiveLengthWithDirections(int x, int y){
+        CellState[][] boardArray = board.board;
+
+        if (boardArray[x][y] == CellState.EMPTY) {
+            System.out.println("The starting cell is empty.");
+            return new int[]{0, 0, 0};
+        }
+
+        int max = -1;
+        int max_dx = -1;
+        int max_dy = -1;
+        for (int[] dir : directions) {
+            int dx = dir[0];
+            int dy = dir[1];
+            if (max < countLengthConsecutiveCells(x, y, dx, dy)){
+                max = countLengthConsecutiveCells(x, y, dx, dy);
+                max_dx = dx;
+                max_dy = dy;
+            }
+        }
+        return new int[]{max, max_dx, max_dy};
+    }
+
     public int countConsecutive(int x, int y, int dx, int dy) {
         CellState[][] boardArray = board.board;
 

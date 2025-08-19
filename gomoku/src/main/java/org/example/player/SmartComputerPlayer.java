@@ -30,44 +30,46 @@ public class SmartComputerPlayer extends Player{
         int y = -1;
         CellState[][] boardArray = board.board;
 
-        //add max length direction to WinChecker
-        
-        for (int i = 0; i < board.boardSize; i++){
-            for (int j = 0; j < board.boardSize; j++){
-                //scenario 1
-                if (boardArray[i][j]!=CellState.EMPTY && boardArray[i][j]!=cellState){
-                    //find max length direction
-                    for (int[] dir : winChecker.directions) {
-                        int dx = dir[0];
-                        int dy = dir[1];
-                        if (winChecker.countConsecutive(i,j,dx,dy)> winChecker.numberOfConsecutiveCellsToWin-1){
-                            x = i + dx* winChecker.countConsecutive(i,j,dx,dy);
-                            y = j + dy* winChecker.countConsecutive(i,j,dx,dy);
-                            break;
-                        }
+        for (int i = 0; i < board.boardSize; i++) {
+            for (int j = 0; j < board.boardSize; j++) {
+
+
+
+                if (boardArray[i][j] != CellState.EMPTY && boardArray[i][j] != cellState) {
+                    int max = winChecker.maxConsecutiveLengthWithDirections(i, j)[0];
+                    int max_dx = winChecker.maxConsecutiveLengthWithDirections(i, j)[1];
+                    int max_dy = winChecker.maxConsecutiveLengthWithDirections(i, j)[2];
+
+                    if (max >= winChecker.numberOfConsecutiveCellsToWin-1) {
+                        x = i + (max-1) * max_dx;
+                        y = j + max_dy;
+                        break;
                     }
                 }
-                //scenario 2
-                if (boardArray[i][j]==cellState){
-                    for (int[] dir : winChecker.directions) {
-                        int dx = dir[0];
-                        int dy = dir[1];
-                        //find max length direction
-                        if (winChecker.countConsecutive(i,j,dx,dy)> winChecker.numberOfConsecutiveCellsToWin-1){
-                            x = i + dx* winChecker.countConsecutive(i,j,dx,dy);
-                            y = j + dy* winChecker.countConsecutive(i,j,dx,dy);
-                            break;
-                        }
-                    }
+
+                if (boardArray[i][j] == cellState) {
+                    int max = winChecker.maxConsecutiveLengthWithDirections(i, j)[0];
+                    int max_dx = winChecker.maxConsecutiveLengthWithDirections(i, j)[1];
+                    int max_dy = winChecker.maxConsecutiveLengthWithDirections(i, j)[2];
+                        x = i + (max-1) * max_dx;
+                        y = j + (max-1) * max_dy;
+                        break;
                 }
-                //scenario 3
-                //else just pick a cell
+
+                if (boardArray[i][j] == CellState.EMPTY) {
+                    Random r = new Random();
+                    x = r.nextInt(board.boardSize-1);
+                    y = r.nextInt(board.boardSize-1);
+                    break;
+                }
+
+
 
             }
         }
-
-
         return new int[] {x,y};
     }
 
 }
+
+
