@@ -14,7 +14,7 @@ public class SmartComputerPlayer extends Player{
     WinChecker winChecker;
 
     public SmartComputerPlayer(CellState cellState, WinChecker winChecker) {
-        super(cellState, generateRandomName(), PlayerType.DUMB_COMPUTER);
+        super(cellState, generateRandomName(), PlayerType.SMART_COMPUTER);
         this.winChecker = winChecker;
     }
 

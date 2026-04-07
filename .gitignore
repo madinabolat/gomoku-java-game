@@ -1,2 +1,3 @@
 # ignore local dev notes
 notes/
+.DS_Store
