@@ -18,11 +18,6 @@ public class SmartComputerPlayer extends Player{
         this.winChecker = winChecker;
     }
 
-    public static String generateRandomName(){
-        String name = UUID.randomUUID().toString().substring(0,5);
-        return name;
-    }
-
     @Override
     public int[] generateCoordinates(Board board){
         System.out.println("Computer " + name + " choosing its move:");
