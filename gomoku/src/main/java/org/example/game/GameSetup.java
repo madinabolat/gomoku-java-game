@@ -106,8 +106,8 @@ public class GameSetup {
         while (true) {
             try {
                 boardSize = Integer.parseInt(scanner.nextLine());
-                if (boardSize < 0 || boardSize > 15) {
-                    System.out.println("Enter integer between 0 and 15");
+                if (boardSize < 3 || boardSize > 15) {
+                    System.out.println("Enter integer between 3 and 15");
                     continue;
                 }
                 break;
@@ -124,8 +124,8 @@ public class GameSetup {
         while (true) {
             try {
                 numberOfConsecutiveCellsToWin = Integer.parseInt(scanner.nextLine());
-                if (numberOfConsecutiveCellsToWin < 0 || numberOfConsecutiveCellsToWin > 15) {
-                    System.out.println("Enter integer between 0 and 15");
+                if (numberOfConsecutiveCellsToWin < 2 || numberOfConsecutiveCellsToWin > board.boardSize) {
+                    System.out.println("Enter integer between 2 and " + board.boardSize);
                     continue;
                 }
                 break;

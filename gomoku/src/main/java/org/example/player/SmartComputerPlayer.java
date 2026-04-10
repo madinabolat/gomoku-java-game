@@ -25,11 +25,11 @@ public class SmartComputerPlayer extends Player{
         int y = -1;
         CellState[][] boardArray = board.board;
 
+        //scan the board first
+        //get the opponent's cells, my  cells. where i should put.
+        //if i can win -> win. if not, find opponent. if they can win -> block. 
         for (int i = 0; i < board.boardSize; i++) {
             for (int j = 0; j < board.boardSize; j++) {
-
-
-
                 if (boardArray[i][j] != CellState.EMPTY && boardArray[i][j] != cellState) {
                     int max = winChecker.maxConsecutiveLengthWithDirections(i, j)[0];
                     int max_dx = winChecker.maxConsecutiveLengthWithDirections(i, j)[1];
@@ -37,8 +37,8 @@ public class SmartComputerPlayer extends Player{
 
                     if (max >= winChecker.numberOfConsecutiveCellsToWin-1) {
                         x = i + (max-1) * max_dx;
-                        y = j + max_dy;
-                        break;
+                        y = j + (max-1) * max_dy;
+                        continue;
                     }
                 }
 
@@ -48,14 +48,14 @@ public class SmartComputerPlayer extends Player{
                     int max_dy = winChecker.maxConsecutiveLengthWithDirections(i, j)[2];
                         x = i + (max-1) * max_dx;
                         y = j + (max-1) * max_dy;
-                        break;
+                    continue;
                 }
 
                 if (boardArray[i][j] == CellState.EMPTY) {
                     Random r = new Random();
                     x = r.nextInt(board.boardSize-1);
                     y = r.nextInt(board.boardSize-1);
-                    break;
+                    continue;
                 }
 
 
