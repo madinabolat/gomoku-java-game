@@ -12,5 +12,9 @@ public class Main {
         gameSetup.initializeGame();
         Game game = new Game(gameSetup);
         game.playGame();
+
+        //TO DO: fix SmartComputer logic
+        //TO DO: add tests
+        //TO DO: add GUI Swing
     }
 }
