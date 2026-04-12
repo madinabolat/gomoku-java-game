@@ -1,21 +1,19 @@
 package org.example.player;
 import org.example.board.Board;
 import org.example.board.CellState;
-
-import java.util.Random;
-import java.util.Scanner;
+import org.example.gameio.GameIO;
 
 public class HumanPlayer extends Player{
-    public Scanner scanner;
+    GameIO gameIO;
 
-    public HumanPlayer(Scanner scanner, CellState cellState, String name) {
+    public HumanPlayer(GameIO gameIO, CellState cellState, String name) {
         super(cellState, name, PlayerType.HUMAN);
-        this.scanner = scanner;
+        this.gameIO = gameIO;
     }
 
     @Override
     public int[] generateCoordinates(Board board){
-        System.out.println(name + ", enter your move in 'row,column' format " +
+        gameIO.showMessage(name + ", enter your move in 'row,column' format " +
                 "(example: '3,3' if you want to place your move in 3rd row, 3rd column). Row, column numbers start from 1.");
 
         String input;
@@ -24,14 +22,14 @@ public class HumanPlayer extends Player{
         int y = -1;
 
         while (true) {
-            input = scanner.nextLine();
+            input = gameIO.getInput();
             coordinates = input.split(",");
 
             if (coordinates.length < 2) {
-                System.out.println("You entered too few arguments. Enter exactly two integers separated by comma.");
+                gameIO.showMessage("You entered too few arguments. Enter exactly two integers separated by comma.");
                 continue;
             } else if (coordinates.length > 2) {
-                System.out.println("You entered too many arguments. Enter exactly two integers separated by comma.");
+                gameIO.showMessage("You entered too many arguments. Enter exactly two integers separated by comma.");
                 continue;
             }
 
@@ -39,7 +37,7 @@ public class HumanPlayer extends Player{
                 x = Integer.parseInt(coordinates[0].trim()) - 1;
             }
             catch (NumberFormatException e) {
-                System.out.println("Input " + coordinates[0] + " is not valid. Enter a valid integer");
+                gameIO.showMessage("Input " + coordinates[0] + " is not valid. Enter a valid integer");
                 continue;
             }
 
@@ -47,7 +45,7 @@ public class HumanPlayer extends Player{
                 y = Integer.parseInt(coordinates[1].trim()) - 1;
             }
             catch (NumberFormatException e) {
-                System.out.println("Input " + coordinates[1] + " is not valid. Enter a valid integer");
+                gameIO.showMessage("Input " + coordinates[1] + " is not valid. Enter a valid integer");
                 continue;
             }
             break;

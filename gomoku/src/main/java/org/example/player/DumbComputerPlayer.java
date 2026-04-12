@@ -13,8 +13,14 @@ public class DumbComputerPlayer extends Player{
     @Override
     protected int[] generateCoordinates(Board board){
         Random r = new Random();
-        int x = r.nextInt(board.boardSize);
-        int y = r.nextInt(board.boardSize);
+        int x = r.nextInt(board.boardSize-1);
+        int y = r.nextInt(board.boardSize-1);
+        if (!board.checkIfCellEmpty(x,y)){
+            while(!board.checkIfCellEmpty(x,y)){
+                x = r.nextInt(board.boardSize-1);
+                y = r.nextInt(board.boardSize-1);
+            }
+        }
         return new int[] {x,y};
     }
 }

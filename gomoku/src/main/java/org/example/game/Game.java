@@ -1,19 +1,22 @@
 package org.example.game;
 
 import org.example.board.Board;
-import org.example.player.HumanPlayer;
+import org.example.gameio.GameIO;
 import org.example.player.Move;
 import org.example.player.Player;
+import org.example.player.PlayerType;
 
 public class Game {
     GameSetup gameSetup;
     Board board;
     WinChecker winChecker;
+    GameIO gameIO;
 
     public Game(GameSetup gameSetup){
         this.gameSetup = gameSetup;
         this.board = gameSetup.board;
         this.winChecker = new WinChecker(board, gameSetup.numberOfConsecutiveCellsToWin);
+        this.gameIO = gameSetup.gameIO;
     }
 
     public Player getCurrentPlayer(int currentRound) {
@@ -24,17 +27,19 @@ public class Game {
         }
     }
 
-    public Move getValidMove(Player currentPlayer) { //this should be changed for computer
+    public Move getValidMove(Player currentPlayer) {
         Move currentMove;
         while (true) {
             currentMove = currentPlayer.getMove(board);
-            if (!board.checkIfValidCoordinates(currentMove.x, currentMove.y)) {
-                System.out.println("This cell is out of bounds. Please enter coordinates within the board size " + board.boardSize + "x" + board.boardSize);
-                continue;
-            }
-            if (!board.checkIfCellEmpty(currentMove.x, currentMove.y)) {
-                System.out.println("This cell is occupied. Please enter again");
-                continue;
+            if (currentPlayer.playerType.equals(PlayerType.HUMAN)){
+                if (!board.checkIfValidCoordinates(currentMove.x, currentMove.y)) {
+                    gameIO.showMessage("This cell is out of bounds. Please enter coordinates within the board size " + board.boardSize + "x" + board.boardSize);
+                    continue;
+                }
+                if (!board.checkIfCellEmpty(currentMove.x, currentMove.y)) {
+                    gameIO.showMessage("This cell is occupied. Please enter again");
+                    continue;
+                }
             }
             break;
         }
@@ -52,10 +57,10 @@ public class Game {
             currentPlayer = getCurrentPlayer(currentRound);
             currentMove = getValidMove(currentPlayer);
             board.placeMove(currentMove);
-            board.printBoard();
+            gameIO.showBoard(board);
 
             if (winChecker.isWinningMove(currentMove.x, currentMove.y)) {
-                System.out.println(currentPlayer.name + " won!");
+                gameIO.showWin(currentPlayer.name);
                 gameState = GameState.WIN;
                 break;
             }
@@ -63,7 +68,7 @@ public class Game {
             currentRound++;
 
             if (board.checkIfBoardFull()) {
-                System.out.println("The board is full, game is over.");
+                gameIO.showDraw();
                 gameState = GameState.DRAW;
                 break;
             }

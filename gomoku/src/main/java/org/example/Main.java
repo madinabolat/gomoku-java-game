@@ -1,17 +1,16 @@
 package org.example;
 import org.example.game.Game;
 import org.example.game.GameSetup;
-
-import java.util.Scanner;
+import org.example.gameio.ConsoleGameIO;
+import org.example.gameio.GameIO;
 
 public class Main {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        GameSetup gameSetup = new GameSetup(scanner);
+        GameIO gameIO = new ConsoleGameIO();
+        GameSetup gameSetup = new GameSetup(gameIO);
         gameSetup.initializeGame();
         Game game = new Game(gameSetup);
         game.playGame();
-
     }
 }

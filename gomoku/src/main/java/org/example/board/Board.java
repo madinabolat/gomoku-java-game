@@ -23,15 +23,6 @@ public class Board {
         return boardSize;
     }
 
-    public void printBoard() {
-        for (int i = 0; i < boardSize; i++) {
-            for (int j = 0; j < boardSize; j++) {
-                System.out.print(board[i][j].getSymbol());
-            }
-            System.out.println();
-        }
-    }
-
     public boolean checkIfCellEmpty(int x, int y) {
         return board[x][y] == CellState.EMPTY;
     }
