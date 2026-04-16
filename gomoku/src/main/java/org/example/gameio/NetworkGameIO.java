@@ -13,11 +13,17 @@ public class NetworkGameIO implements GameIO {
 
     @Override
     public String getValidPlayerName() {
-//write:
-//        method: X
-//        server sends:
-//        Client sends:
+        //server sends: asks for player name
+        //client sends name
+        //server validates input
+        //server returns name
 
+        //server sends: "ENTER_NAME"
+        //client shows: "Enter name for a player:"
+        //client sends: "Alice"
+        //server validates. If empty, sends "EMPTY_NAME_ERROR"
+        //if error, client sends: "Name cant be empty. Please enter again".
+        //server returns name
         System.out.print("Enter name for player: ");
         String name;
         while (true) {
