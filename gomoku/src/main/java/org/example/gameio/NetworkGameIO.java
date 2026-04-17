@@ -39,6 +39,11 @@ public class NetworkGameIO implements GameIO {
 
     @Override
     public int getValidBoardDimensions() {
+        //server sends: "ENTER_BOARD_SIZE_MAX_15"
+        //client shows: "Enter the size of the board (max: 15), for example: 15 for a 15x15 board (a classic gomoku game). The board will always be square"
+        //client sends: 15
+        //server validates. if not valid, sends "ENTER_VALID_INTEGER"
+
         System.out.println("Enter the size of the board (max: 15), for example: 15 for a 15x15 board (a classic gomoku game). The board will always be square");
         int boardSize = -1;
         while (true) {
