@@ -63,6 +63,13 @@ public class NetworkGameIO implements GameIO {
 
     @Override
     public int getNumOfConsecutiveCellsToWin(int maxValue) {
+        //server sends: "CHOOSE_NUM_CELLS_WIN"
+        //client shows: "Choose the number ..."
+        //client sends: int
+        //server validates
+        //if less than max value, server sends: "ENTER_VALID_NUM"
+        //client says: "Enter integer between 2 and "
+        //server returns int
         System.out.println("Choose the number of consecutive cells needed to win (for a classic Gomoku game pick 5): ");
         int numberOfConsecutiveCellsToWin = -1;
 
