@@ -47,6 +47,11 @@ public class Game {
     }
 
     public void playGame() {
+        //TO DO
+//        1. Go through playGame() and label each gameIO call — "current player only" or "both"
+//        2. Then update Game to have two gameIO fields
+//        3. Then start on NetworkGameIO — give it a socket and implement getInput() / showMessage() / showBoard() using streams instead of System.out
+
         int currentRound = 0;
         Player currentPlayer;
         Move currentMove;
