@@ -10,13 +10,15 @@ public class Game {
     GameSetup gameSetup;
     Board board;
     WinChecker winChecker;
-    GameIO gameIO;
+    GameIO gameIOPlayerOne;
+    GameIO gameIOPlayerTwo;
 
     public Game(GameSetup gameSetup){
         this.gameSetup = gameSetup;
         this.board = gameSetup.board;
         this.winChecker = new WinChecker(board, gameSetup.numberOfConsecutiveCellsToWin);
-        this.gameIO = gameSetup.gameIO;
+        this.gameIOPlayerOne = gameSetup.gameIOPlayerOne;
+        this.gameIOPlayerTwo = gameSetup.gameIOPlayerTwo;
     }
 
     public Player getCurrentPlayer(int currentRound) {
@@ -27,7 +29,15 @@ public class Game {
         }
     }
 
-    public Move getValidMove(Player currentPlayer) {
+    public GameIO getCurrentGameIO(int currentRound) {
+        if (currentRound % 2 == 0) {
+            return gameSetup.gameIOPlayerOne;
+        } else {
+            return gameSetup.gameIOPlayerTwo;
+        }
+    }
+
+    public Move getValidMove(Player currentPlayer, GameIO gameIO) {
         Move currentMove;
         while (true) {
             currentMove = currentPlayer.getMove(board);
@@ -55,17 +65,21 @@ public class Game {
         int currentRound = 0;
         Player currentPlayer;
         Move currentMove;
+        GameIO currentGameIO;
         GameState gameState;
         gameState = GameState.IN_PROGRESS;
 
         while (gameState != GameState.WIN) {
             currentPlayer = getCurrentPlayer(currentRound);
-            currentMove = getValidMove(currentPlayer);
+            currentGameIO = getCurrentGameIO(currentRound);
+            currentMove = getValidMove(currentPlayer, currentGameIO);
             board.placeMove(currentMove);
-            gameIO.showBoard(board);
+            gameIOPlayerOne.showBoard(board);
+            gameIOPlayerTwo.showBoard(board);
 
             if (winChecker.isWinningMove(currentMove.x, currentMove.y)) {
-                gameIO.showWin(currentPlayer.name);
+                gameIOPlayerOne.showWin(currentPlayer.name);
+                gameIOPlayerTwo.showWin(currentPlayer.name);
                 gameState = GameState.WIN;
                 break;
             }
@@ -73,7 +87,8 @@ public class Game {
             currentRound++;
 
             if (board.checkIfBoardFull()) {
-                gameIO.showDraw();
+                gameIOPlayerOne.showDraw();
+                gameIOPlayerTwo.showDraw();
                 gameState = GameState.DRAW;
                 break;
             }

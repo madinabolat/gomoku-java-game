@@ -10,16 +10,19 @@ public class GameSetup {
     Player playerTwo;
     Board board;
     int numberOfConsecutiveCellsToWin;
-    GameIO gameIO;
+    GameIO gameIOPlayerOne;
+    GameIO gameIOPlayerTwo;
 
-    public GameSetup(GameIO gameIO){
-        this.gameIO = gameIO;
+
+    public GameSetup(GameIO gameIOPlayerOne, GameIO gameIOPlayerTwo){
+        this.gameIOPlayerOne = gameIOPlayerOne;
+        this.gameIOPlayerTwo = gameIOPlayerTwo;
     }
 
-    public Player createPlayerByType(PlayerType playerType, CellState cellState){
+    public Player createPlayerByType(PlayerType playerType, CellState cellState, GameIO gameIO){
         switch (playerType){
             case PlayerType.HUMAN:
-                return createHumanPlayer(cellState);
+                return createHumanPlayer(cellState, gameIO);
             case PlayerType.DUMB_COMPUTER:
                 return createDumbComputerPlayer(cellState);
             case PlayerType.SMART_COMPUTER:
@@ -29,7 +32,7 @@ public class GameSetup {
         }
     }
 
-    public Player createHumanPlayer(CellState cellState) {
+    public Player createHumanPlayer(CellState cellState, GameIO gameIO) {
         String name = gameIO.getValidPlayerName();
         return new HumanPlayer(gameIO, cellState, name);
     }
@@ -43,27 +46,24 @@ public class GameSetup {
     }
 
     public void initializePlayers(){
-        PlayerType playerOneType = gameIO.getPlayerType("Player One");
-        PlayerType playerTwoType = gameIO.getPlayerType("Player Two");
-        Player playerOne = createPlayerByType(playerOneType, CellState.PLAYER_ONE);
-        Player playerTwo = createPlayerByType(playerTwoType, CellState.PLAYER_TWO);
+        PlayerType playerOneType = gameIOPlayerOne.getPlayerType("Player One");
+        PlayerType playerTwoType = gameIOPlayerTwo.getPlayerType("Player Two");
+        Player playerOne = createPlayerByType(playerOneType, CellState.PLAYER_ONE, gameIOPlayerOne);
+        Player playerTwo = createPlayerByType(playerTwoType, CellState.PLAYER_TWO, gameIOPlayerTwo);
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
     }
 
     public void createBoard() {
-       int boardSize = gameIO.getValidBoardDimensions();
+       int boardSize = gameIOPlayerOne.getValidBoardDimensions();
        this.board = new Board(boardSize);
     }
 
     public void setNumOfConsecutiveCellsToWin() {
-        this.numberOfConsecutiveCellsToWin = gameIO.getNumOfConsecutiveCellsToWin(board.boardSize);
+        this.numberOfConsecutiveCellsToWin = gameIOPlayerOne.getNumOfConsecutiveCellsToWin(board.boardSize);
     }
 
-    public void initializeGame(){
-        createBoard();
-        setNumOfConsecutiveCellsToWin();
-        initializePlayers();
+    public void display(GameIO gameIO){
         gameIO.showMessage("Game ready to start.");
         gameIO.showMessage("Players created:");
         gameIO.showMessage(playerOne.toString());
@@ -71,5 +71,13 @@ public class GameSetup {
         gameIO.showMessage("Board created:");
         gameIO.showBoard(board);
         gameIO.showMessage("Number of consecutive cells to win selected: "+ numberOfConsecutiveCellsToWin);
+    }
+
+    public void initializeGame(){
+        createBoard();
+        setNumOfConsecutiveCellsToWin();
+        initializePlayers();
+        display(gameIOPlayerOne);
+        display(gameIOPlayerTwo);
     }
 }

@@ -2,6 +2,7 @@ package org.example.gameio;
 
 import org.example.board.Board;
 import org.example.board.CellState;
+import org.example.network.ClientDisconnectedException;
 import org.example.player.PlayerType;
 
 import java.io.BufferedReader;
@@ -28,11 +29,18 @@ public class NetworkGameIO extends BaseGameIO{
 
     @Override
     String receiveLine(){
+        sendMessage("INPUT_REQUIRED");
         String s;
         try {
-            s = in.readLine().trim();
+            s = in.readLine();
+            if (s != null){
+                s = s.trim();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+        if (s == null){
+            throw new ClientDisconnectedException("Player disconnected");
         }
         return s;
     }

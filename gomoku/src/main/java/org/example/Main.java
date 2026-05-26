@@ -3,12 +3,13 @@ import org.example.game.Game;
 import org.example.game.GameSetup;
 import org.example.gameio.ConsoleGameIO;
 import org.example.gameio.GameIO;
+import org.example.gameio.NetworkGameIO;
 
 public class Main {
 
     public static void main(String[] args) {
         GameIO gameIO = new ConsoleGameIO();
-        GameSetup gameSetup = new GameSetup(gameIO);
+        GameSetup gameSetup = new GameSetup(gameIO, gameIO);
         gameSetup.initializeGame();
         Game game = new Game(gameSetup);
         game.playGame();
